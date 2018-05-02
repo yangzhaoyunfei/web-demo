@@ -18,17 +18,97 @@
 <div class="container-fluid">
     <h1>我的第一个 Bootstrap 页面</h1>
     <p>使用了 .container-fluid，100% 宽度，占据全部视口（viewport）的容器。</p>
-    <div id="myDiv" class=b style="width: 200px; height: 200px;background:pink;position:absolute;left:500px;top:100px;"></div>
+
 
 </div>
+<div>If no background color is set on the Element, or its background color is set to 'transparent', the default end
+    value will be white.
+</div>
+<div>Element shortcut method for tweening the background color. Immediately transitions an Element's background color to
+    a specified highlight color then back to its set background color.
+</div>
+<div>Element shortcut method which immediately transitions any single CSS property of an Element from one value to
+    another.
+</div>
+
 <script>
-    $("div").click(function () {
-        var divHtml = $(this).html(); // notice "this" instead of a specific #myDiv
-        var editableText = $("<textarea />");
-        editableText.val(divHtml);
-        $(this).replaceWith(editableText);
-        editableText.focus();
+
+    /**
+     * 参考链接:https://stackoverflow.com/questions/2441565/how-do-i-make-a-div-element-editable-like-a-textarea-when-i-click-it
+     */
+
+
+    $(document).ready(function () {
+        $("div").click(divClicked);
     });
+
+
+    /**
+     * 点击非输入元素,替换为输入元素
+     */
+    function divClicked() {
+        var divHtml = $(this).html();//保存原来元素的html
+        var editableText = $("<textarea />");//新建一个输入元素
+        editableText.val(divHtml);//将非输入元素的值放到输入元素中
+        $(this).replaceWith(editableText);//输入元素替换非输入元素
+        editableText.focus();//使输入元素获得焦点
+        // setup the blur event for this new textarea
+        /**
+         * 失去焦点时触发
+         */
+        editableText.blur(editableTextBlurred);
+    }
+
+
+    /**
+     * 输入元素恢复为非输入元素
+     */
+    function editableTextBlurred() {
+        var html = $(this).val();//保存输入元素的值
+        var viewableText = $("<div>");//创建一个非输入元素
+        viewableText.html(html);//将输入元素的值放到非输入元素中
+        $(this).replaceWith(viewableText);//非输入元素替换输入元素
+        // setup the click event for this new div
+        viewableText.click(divClicked);
+    }
+
+
+</script>
+<script>
+    /**
+     * 另一个参考
+     */
+    /*
+<p><span class="editable_text">Here is my original text.</span></p>
+
+
+.text_editor {
+  border: none;
+  background: #ddd;
+  color: #000;
+  font-size: 14px;
+  font-family: arial;
+  width: 200px;
+  cursor: text;
+}
+
+
+ $(document).on("click", ".editable_text", function () {
+        var original_text = $(this).text();
+        var new_input = $("<input class=\"text_editor\"/>");
+        new_input.val(original_text);
+        $(this).replaceWith(new_input);
+        new_input.focus();
+    });
+
+    $(document).on("blur", ".text_editor", function () {
+        var new_input = $(this).val();
+        var updated_text = $("<span class=\"editable_text\">");
+        updated_text.text(new_input);
+        $(this).replaceWith(updated_text);
+    });
+
+    */
 </script>
 </body>
 </html>
